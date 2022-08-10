@@ -3,6 +3,30 @@ class Game {
     this.combinationsSequence = [];
     this.checkingArr = [];
     this.score = 0;
+    this.grid = [];
+    this.board = [];
+    this.playerPosition = 44;
+  }
+
+  showPlayer() {
+    this.board[this.playerPosition].classList.add("player");
+  }
+
+  hidePlayer() {
+    this.board[this.playerPosition].classList.remove("player");
+  }
+
+  movePlayerUp() {
+    this.hidePlayer();
+    this.playerPosition -= 10;
+    this.showPlayer();
+  }
+
+  movePlayerDown() {
+    // console.log(this);
+    this.hidePlayer();
+    this.playerPosition += 10;
+    this.showPlayer();
   }
 
   createRandomSequence() {
@@ -18,6 +42,24 @@ class Game {
         clone.splice(a, 1);
       }
       this.combinationsSequence.push(tempArr);
+    }
+  }
+
+  createBoard(element) {
+    for (let i = 0; i < 100; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("boardCell");
+      element.append(cell);
+      this.board.push(cell);
+    }
+  }
+
+  createGrid(element) {
+    for (let i = 0; i < 6; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("gridCell");
+      element.append(cell);
+      this.grid.push(cell);
     }
   }
 
@@ -61,5 +103,11 @@ class Game {
       tempArr.push(arrows[a]);
     }
     this.combinationsSequence.push(tempArr);
+  }
+
+  isGameOver() {
+    if (this.playerPosition > 94) {
+      //game over
+    }
   }
 }

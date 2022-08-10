@@ -2,19 +2,7 @@ const startButton = document.querySelector("#start");
 const scoreElement = document.querySelector("#score span");
 const boardElement = document.querySelector("#board");
 const gridElement = document.querySelector("#display");
-const grid = [];
-const board = [];
-let counter = 0;
 let myGame;
-
-/*function createBoard() {
-  for (let i = 0; i < 100; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    boardElement.append(cell);
-    board.push(cell);
-  }
-}*/
 
 const pressedKeys = {
   ArrowDown: false,
@@ -23,23 +11,18 @@ const pressedKeys = {
   ArrowRight: false,
 };
 
-function createGrid() {
-  for (let i = 0; i < 6; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    gridElement.append(cell);
-    grid.push(cell);
-  }
-}
-
 function startNewGame() {
   gridElement.innerHTML = "";
+  boardElement.innerHTML = "";
   myGame = new Game();
   myGame.createRandomSequence();
-  //createBoard();
-  createGrid();
-  myGame.displayCombinations(grid);
-  console.log(myGame.combinationsSequence);
+  myGame.createBoard(boardElement);
+  myGame.createGrid(gridElement);
+  myGame.showPlayer();
+  myGame.displayCombinations(myGame.grid);
+  const cadence = setInterval(() => {
+    myGame.movePlayerDown();
+  }, 1000);
 
   document.addEventListener("keydown", (event) => {
     switch (event.key) {
@@ -60,8 +43,11 @@ function startNewGame() {
     if (checkPressedKeys()) {
       console.log("I just pressed: ", event.key);
 
-      myGame.combinationsSequence.splice(0, 1);
-      myGame.displayCombinations(grid);
+      myGame.combinationsSequence.shift();
+      myGame.generateNewCombination();
+      myGame.increaseScore();
+      myGame.movePlayerUp();
+      myGame.displayCombinations(myGame.grid);
     }
   });
   document.addEventListener("keyup", (event) => {
@@ -79,9 +65,9 @@ function startNewGame() {
         pressedKeys.ArrowRight = false;
         break;
     }
-    //checkPressedKeys()
   });
 }
+
 function checkPressedKeys() {
   const tempPressedKeys = [];
   for (const key in pressedKeys) {
@@ -89,17 +75,6 @@ function checkPressedKeys() {
       tempPressedKeys.push(key);
     }
   }
-  // Verify that all the tenpPressedKeys exist in the combination
-  // If all the keys are correct: go to next combination with points
-  // If missing a key, do nothing
-  // If a pressedKey is wrong = Go to next combination without points
-
-  console.log(
-    "Combinaison ",
-    myGame.combinationsSequence[0],
-    "pressed keys ",
-    tempPressedKeys
-  );
 
   const lengthsAreSame =
     myGame.combinationsSequence[0].length === tempPressedKeys.length;
@@ -110,7 +85,6 @@ function checkPressedKeys() {
   const areAllKeysPressed = myGame.combinationsSequence[0].every((key) =>
     tempPressedKeys.includes(key)
   );
-  console.log("all pressed?", areAllKeysPressed);
   return areAllKeysPressed;
 }
 

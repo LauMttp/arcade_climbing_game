@@ -22,14 +22,27 @@ header {
   justify-content: space-between;
 }
 
-main {
-  display: flex;
+#board {
+  display: grid;
   background-image: url(./img/indoor-rock-climbing-wall-background/0qew_bjsc_211224.jpg);
   background-size: cover;
-  background-position: center;
+  background-position-y: top;
+  background-repeat: repeat-y;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   border: solid;
   height: 35rem;
   width: 45rem;
+  animation: descente 5s infinite linear;
+}
+
+@keyframes descente {
+  0% {
+    background-position-y: top;
+  }
+  100% {
+    background-position-y: 35rem;
+  }
 }
 
 aside {
@@ -67,12 +80,12 @@ aside {
   width: 25rem;
 }
 
-.cell {
+.gridCell {
   border: solid;
-  overflow-wrap: break-word;
-  padding: 0.5rem;
-  width: 100%;
-  line-height: 1.5rem;
+  font-size: xx-large;
+  text-align: center;
+  padding: 2rem;
+  line-height: 2rem;
 }
 
 footer {
@@ -84,7 +97,7 @@ footer {
   border: solid;
 }
 
-#display .cell:first-of-type {
+#display .gridCell:first-of-type {
   box-shadow: 0 0 4px 2px yellow;
   animation: blink 400ms infinite alternate;
 }
@@ -96,4 +109,12 @@ footer {
   100% {
     box-shadow: 0 0 8px 4px yellow;
   }
+}
+
+.boardCell.player {
+  background-image: url(./img/kissman.png);
+  background-size: cover;
+  background-position: center;
+  grid-column-end: span 2;
+  grid-row-end: span 2;
 }
