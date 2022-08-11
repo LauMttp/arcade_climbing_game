@@ -1,3 +1,5 @@
+const arrows = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
+
 class Game {
   constructor() {
     this.combinationsSequence = [];
@@ -5,7 +7,7 @@ class Game {
     this.score = 0;
     this.grid = [];
     this.board = [];
-    this.playerPosition = 44;
+    this.playerPosition = 43;
   }
 
   showPlayer() {
@@ -23,25 +25,15 @@ class Game {
   }
 
   movePlayerDown() {
-    // console.log(this);
     this.hidePlayer();
     this.playerPosition += 10;
     this.showPlayer();
   }
 
   createRandomSequence() {
-    // here we create randomly 50 arrays that we push inside our combinationsSequence
-    const arrows = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
-    for (let i = 0; i < 50; i++) {
-      const clone = [...arrows];
-      const tempArr = [];
-      const max = Math.ceil(Math.random() * 4);
-      for (let ii = 0; ii < max; ii++) {
-        const a = Math.floor(Math.random() * clone.length);
-        tempArr.push(clone[a]);
-        clone.splice(a, 1);
-      }
-      this.combinationsSequence.push(tempArr);
+    // here we create randomly 6 arrays that we push inside our combinationsSequence
+    for (let i = 0; i < 6; i++) {
+      this.generateNewCombination();
     }
   }
 
@@ -95,19 +87,28 @@ class Game {
 
   generateNewCombination() {
     // here we create One Array that we push inside our combinationsSequence
-    const arrows = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
+    const clone = [...arrows];
     const tempArr = [];
-    const max = Math.floor(Math.random() * 4);
-    for (let i = 0; i < max; i++) {
-      const a = Math.floor(Math.random() * 4);
-      tempArr.push(arrows[a]);
+    const max = Math.ceil(Math.random() * 4);
+    for (let ii = 0; ii < max; ii++) {
+      const a = Math.floor(Math.random() * clone.length);
+      tempArr.push(clone[a]);
+      clone.splice(a, 1);
     }
     this.combinationsSequence.push(tempArr);
   }
 
+  doublePoints() {
+    this.score += 20;
+    scoreElement.innerHTML = this.score;
+    for (let i = 0; i < 3; i++) {
+      this.movePlayerDown();
+    }
+  }
+
   isGameOver() {
-    if (this.playerPosition > 94) {
-      //game over
+    if (this.playerPosition > 90) {
+      console.log(true);
     }
   }
 }

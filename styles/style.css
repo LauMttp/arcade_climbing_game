@@ -7,6 +7,11 @@
   font-family: "BarcadeBrawlRegular";
 }
 
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
 header {
   display: flex;
   justify-content: space-around;
@@ -15,6 +20,7 @@ header {
   background-color: black;
   color: white;
   border: solid;
+  height: 5rem;
 }
 
 .area {
@@ -88,6 +94,10 @@ aside {
   line-height: 2rem;
 }
 
+.boardCell {
+  border: solid;
+}
+
 footer {
   display: flex;
   justify-content: space-around;
@@ -115,6 +125,6 @@ footer {
   background-image: url(./img/kissman.png);
   background-size: cover;
   background-position: center;
-  grid-column-end: span 2;
-  grid-row-end: span 2;
+  grid-column-end: span 3;
+  grid-row-end: span 3;
 }

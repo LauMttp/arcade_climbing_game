@@ -20,8 +20,15 @@ function startNewGame() {
   myGame.createGrid(gridElement);
   myGame.showPlayer();
   myGame.displayCombinations(myGame.grid);
+
   const cadence = setInterval(() => {
-    myGame.movePlayerDown();
+    if (myGame.isGameOver()) {
+      myGame.movePlayerDown();
+      clearInterval(cadence);
+      // DISPLAY LOOOOOOOSER SCREEN HERE
+    } else {
+      myGame.movePlayerDown();
+    }
   }, 1000);
 
   document.addEventListener("keydown", (event) => {
@@ -41,12 +48,14 @@ function startNewGame() {
     }
 
     if (checkPressedKeys()) {
-      console.log("I just pressed: ", event.key);
-
+      if (myGame.playerPosition < 10) {
+        myGame.doublePoints();
+      } else {
+        myGame.increaseScore();
+        myGame.movePlayerUp();
+      }
       myGame.combinationsSequence.shift();
       myGame.generateNewCombination();
-      myGame.increaseScore();
-      myGame.movePlayerUp();
       myGame.displayCombinations(myGame.grid);
     }
   });
@@ -78,7 +87,6 @@ function checkPressedKeys() {
 
   const lengthsAreSame =
     myGame.combinationsSequence[0].length === tempPressedKeys.length;
-  console.log("correct count?", lengthsAreSame);
   if (!lengthsAreSame) {
     return false;
   }
