@@ -1,5 +1,7 @@
 const arrows = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
-
+const backSound = new Audio(
+  "./styles/song/mp3-now.com - ColBreakz  Arcade.mp3"
+);
 class Game {
   constructor(gridElement, boardElement, endGameScreen, loserScore) {
     this.combinationsSequence = [];
@@ -14,6 +16,7 @@ class Game {
     this.boardElement = boardElement;
     this.endGameScreen = endGameScreen;
     this.loserScore = loserScore;
+    backSound.play();
   }
 
   showPlayer() {
@@ -32,8 +35,8 @@ class Game {
 
   movePlayerDown() {
     if (this.isGameOver()) {
-      clearTimeout(this.timeoutId);
-      clearInterval(this.intervalId);
+      backSound.pause();
+      this.clearAllIntervals();
       this.displayGameOverScreen();
     }
     this.hidePlayer();
@@ -56,7 +59,7 @@ class Game {
           this.generateTimeoutAndMovePlayerDown();
         }, this.dropInterval);
       }
-      if (this.intervalCounter % 5 === 0) {
+      if (this.intervalCounter % 3 === 0) {
         this.dropInterval -= 50;
         clearTimeout(this.timeoutId);
         this.timeoutId = setTimeout(() => {
@@ -91,6 +94,10 @@ class Game {
     }
   }
 
+  clearAllIntervals() {
+    clearInterval(this.intervalId);
+    clearTimeout(this.timeoutId);
+  }
   displayCombinations(elements) {
     for (let i = 0; i < 6; i++) {
       const target = this.combinationsSequence[i];
@@ -156,7 +163,7 @@ class Game {
 
   displayGameOverScreen() {
     this.endGameScreen.classList.remove("hidden");
-    // this.endGameScreen.querySelector("video").autoplay = true;
+    this.endGameScreen.querySelector("video").play();
     this.loserScore.innerHTML = this.score;
   }
 }

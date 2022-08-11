@@ -1,10 +1,14 @@
 const startButton = document.querySelector("#start");
+const restartButton = document.querySelector("#restart");
 const scoreElement = document.querySelector("#score span");
 const boardElement = document.querySelector("#board");
 const gridElement = document.querySelector("#display");
 const endGameScreen = document.querySelector(".endgamescreen");
 const loserScore = document.querySelector("#loserScore span");
 let myGame;
+
+
+
 
 const pressedKeys = {
   ArrowDown: false,
@@ -14,23 +18,20 @@ const pressedKeys = {
 };
 
 function startNewGame() {
+  if (myGame) {
+    myGame.clearAllIntervals();
+  }
   gridElement.innerHTML = "";
   boardElement.innerHTML = "";
   myGame = new Game(gridElement, boardElement, endGameScreen, loserScore);
   myGame.score = 0;
-  myGame.displayScore;
+  myGame.displayScore();
   myGame.createRandomSequence();
   myGame.createBoard();
   myGame.createGrid();
   myGame.showPlayer();
   myGame.displayCombinations(myGame.grid);
   myGame.setupDrop();
-
-  // if (myGame.isGameOver()) {
-  //   myGame.movePlayerDown();
-  //   clearInterval(cadence);
-  // myGame.displayGameOverScreen(boardElement);
-  // DISPLAY LOOOOOOOSER SCREEN HERE
 
   document.addEventListener("keydown", (event) => {
     switch (event.key) {
@@ -97,4 +98,10 @@ function checkPressedKeys() {
   return areAllKeysPressed;
 }
 
+function restartGame() {
+  myGame.endGameScreen.classList.add("hidden");
+  startNewGame();
+}
+
 startButton.addEventListener("click", startNewGame);
+restartButton.addEventListener("click", restartGame);

@@ -141,3 +141,11 @@ footer {
 .hidden {
   display: none;
 }
+
+#loserScore {
+  margin: 2rem;
+}
+
+#restart {
+  margin: 2rem;
+}
