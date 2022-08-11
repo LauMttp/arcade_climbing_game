@@ -29,12 +29,21 @@
           </ul>
           <button id="start">Click to Start</button>
         </aside>
-  
+
         <section id="board"></section>
         <section id="display"></section>
       </section>
-
     </main>
+    <section class="endgamescreen hidden">
+      <h3 id="loserScore">
+        GAME OVER - Your score is : <span>LOOOSEEEER</span>
+      </h3>
+      <video controls autoplay width="300">
+        <source src="./styles/img/gameover.mp4" type="video/mp4" />
+        Sorry, your browser doesn't support embedded videos.
+      </video>
+      <button id="restart">Play Again</button>
+    </section>
 
     <footer>
       <p>by Laurent Mouttapa</p>

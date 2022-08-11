@@ -94,10 +94,6 @@ aside {
   line-height: 2rem;
 }
 
-.boardCell {
-  border: solid;
-}
-
 footer {
   display: flex;
   justify-content: space-around;
@@ -122,9 +118,26 @@ footer {
 }
 
 .boardCell.player {
-  background-image: url(./img/kissman.png);
+  background-image: url(./img/kissman2.png);
   background-size: cover;
   background-position: center;
   grid-column-end: span 3;
   grid-row-end: span 3;
+}
+
+.endgamescreen {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100vh;
+  width: 100vw;
+  backdrop-filter: blur(5px);
+}
+.hidden {
+  display: none;
 }

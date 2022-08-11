@@ -1,13 +1,19 @@
 const arrows = ["ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown"];
 
 class Game {
-  constructor() {
+  constructor(gridElement, boardElement, endGameScreen, loserScore) {
     this.combinationsSequence = [];
     this.checkingArr = [];
     this.score = 0;
     this.grid = [];
     this.board = [];
     this.playerPosition = 43;
+    this.intervalCounter = 0;
+    this.dropInterval = 1000;
+    this.gridElement = gridElement;
+    this.boardElement = boardElement;
+    this.endGameScreen = endGameScreen;
+    this.loserScore = loserScore;
   }
 
   showPlayer() {
@@ -25,9 +31,39 @@ class Game {
   }
 
   movePlayerDown() {
+    if (this.isGameOver()) {
+      clearTimeout(this.timeoutId);
+      clearInterval(this.intervalId);
+      this.displayGameOverScreen();
+    }
     this.hidePlayer();
     this.playerPosition += 10;
     this.showPlayer();
+  }
+
+  generateTimeoutAndMovePlayerDown() {
+    this.movePlayerDown();
+    this.timeoutId = setTimeout(() => {
+      this.generateTimeoutAndMovePlayerDown();
+    }, this.dropInterval);
+  }
+
+  setupDrop() {
+    this.intervalId = setInterval(() => {
+      this.intervalCounter++;
+      if (!this.timeoutId) {
+        this.timeoutId = setTimeout(() => {
+          this.generateTimeoutAndMovePlayerDown();
+        }, this.dropInterval);
+      }
+      if (this.intervalCounter % 5 === 0) {
+        this.dropInterval -= 50;
+        clearTimeout(this.timeoutId);
+        this.timeoutId = setTimeout(() => {
+          this.generateTimeoutAndMovePlayerDown();
+        }, this.dropInterval);
+      }
+    }, 1000);
   }
 
   createRandomSequence() {
@@ -37,20 +73,20 @@ class Game {
     }
   }
 
-  createBoard(element) {
+  createBoard() {
     for (let i = 0; i < 100; i++) {
       const cell = document.createElement("div");
       cell.classList.add("boardCell");
-      element.append(cell);
+      this.boardElement.append(cell);
       this.board.push(cell);
     }
   }
 
-  createGrid(element) {
+  createGrid() {
     for (let i = 0; i < 6; i++) {
       const cell = document.createElement("div");
       cell.classList.add("gridCell");
-      element.append(cell);
+      this.gridElement.append(cell);
       this.grid.push(cell);
     }
   }
@@ -82,6 +118,10 @@ class Game {
 
   increaseScore() {
     this.score += 5;
+    this.displayScore();
+  }
+
+  displayScore() {
     scoreElement.innerHTML = this.score;
   }
 
@@ -100,8 +140,9 @@ class Game {
 
   doublePoints() {
     this.score += 20;
-    scoreElement.innerHTML = this.score;
+    this.displayScore();
     for (let i = 0; i < 3; i++) {
+      console.log("Im in the loop");
       this.movePlayerDown();
     }
   }
@@ -109,6 +150,13 @@ class Game {
   isGameOver() {
     if (this.playerPosition > 90) {
       console.log(true);
+      return true;
     }
+  }
+
+  displayGameOverScreen() {
+    this.endGameScreen.classList.remove("hidden");
+    // this.endGameScreen.querySelector("video").autoplay = true;
+    this.loserScore.innerHTML = this.score;
   }
 }
